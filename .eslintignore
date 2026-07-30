@@ -1,0 +1,14 @@
+core/templates/expressions/parser.js
+core/templates/google-analytics.initializer.ts
+integrations/*
+integrations_dev/*
+assets/scripts/*
+third_party/*
+build/*
+*.min.js
+dump.rdb
+.direnv/*
+tmpcompiledjs*
+dist/*
+local_compiled_js/*
+local_compiled_js_for_test/*

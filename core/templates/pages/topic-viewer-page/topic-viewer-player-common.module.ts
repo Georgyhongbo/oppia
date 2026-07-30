@@ -1,0 +1,60 @@
+// Copyright 2021 The Oppia Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/**
+ * @fileoverview Module for the CkEditor4 components.
+ */
+
+import 'zone.js';
+
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {SubtopicsListComponent} from './subtopics-list/subtopics-list.component';
+import {StoriesListComponent} from './deprecations/stories-list/topic-viewer-stories-list.component';
+import {TopicStorySectionComponent} from './topic-story-section/topic-story-section.component';
+import {TopicLessonCardComponent} from './topic-story-section/topic-lesson-card/topic-lesson-card.component';
+import {LanguageSelectorComponent} from './topic-story-section/topic-lesson-card/language-selector.component';
+import {TopicPracticeCardComponent} from './topic-story-section/topic-practice-card/topic-practice-card.component';
+import {MatCardModule} from '@angular/material/card';
+import {SharedComponentsModule} from 'components/shared-component.module';
+
+@NgModule({
+  imports: [CommonModule, FormsModule, MatCardModule, SharedComponentsModule],
+  declarations: [
+    StoriesListComponent,
+    SubtopicsListComponent,
+    TopicStorySectionComponent,
+    TopicLessonCardComponent,
+    LanguageSelectorComponent,
+    TopicPracticeCardComponent,
+  ],
+  entryComponents: [
+    StoriesListComponent,
+    SubtopicsListComponent,
+    TopicStorySectionComponent,
+    TopicLessonCardComponent,
+    TopicPracticeCardComponent,
+    LanguageSelectorComponent,
+  ],
+  exports: [
+    StoriesListComponent,
+    SubtopicsListComponent,
+    TopicStorySectionComponent,
+    TopicLessonCardComponent,
+    LanguageSelectorComponent,
+    TopicPracticeCardComponent,
+  ],
+})
+export class TopicPlayerViewerCommonModule {}
