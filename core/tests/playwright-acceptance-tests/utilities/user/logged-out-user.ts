@@ -86,12 +86,6 @@ const mobileSidebarExpandGetInvolvedMenuButton =
   'div.e2e-mobile-test-sidebar-expand-get-involved-menu';
 const mobileSidebarGetInvolvedMenuPartnershipsButton =
   'a.e2e-mobile-test-sidebar-get-involved-menu-partnerships-button';
-const mobileSidebarGetInvolvedMenuVolunteerButton =
-  'a.e2e-mobile-test-sidebar-get-involved-menu-volunteer-button';
-const mobileSidebarGetInvolvedMenuDonateButton =
-  'a.e2e-mobile-test-sidebar-get-involved-menu-donate-button';
-const mobileSidebarGetInvolvedMenuContactUsButton =
-  'a.e2e-mobile-test-sidebar-get-involved-menu-contact-us-button';
 
 const nextCardButton = '.e2e-test-next-card-button';
 const nextCardArrowButton = '.e2e-test-next-button';
@@ -192,9 +186,6 @@ const blogSuggestedForYouHeadingSelector = '.post-to-recommend-section-heading';
 const blogCardTagContainerSelector = '.blog-card-tag-container';
 const blogPostTagSelector = '.e2e-test-blog-post-tag';
 const noBlogPostsFoundSelector = '.e2e-no-blog-posts-found';
-const blogTagContainerSelector = '.e2e-test-blog-tag-container';
-const blogPaginationPrevSelector = '.e2e-test-pagination-prev-button';
-
 const partnershipsHeadingSelector = '.e2e-test-partnership-heading';
 const partnershipPageSubheadingsSelector =
   '.e2e-test-partnership-page-subheading';

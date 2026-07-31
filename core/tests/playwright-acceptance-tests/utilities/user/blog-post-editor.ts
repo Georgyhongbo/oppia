@@ -20,7 +20,7 @@ import {BaseUser} from '../common/playwright-utils';
 import testConstants from '../common/test-constants';
 import {showMessage} from '../common/show-message';
 import {RTEEditor} from '../common/rte-editor';
-import {Page} from '@playwright/test';
+import {expect, Frame, Page} from '@playwright/test';
 
 const blogTitleInput = 'input.e2e-test-blog-post-title-field';
 const blogBodyInput = 'div.e2e-test-rte';
@@ -292,12 +292,12 @@ export class BlogPostEditor extends BaseUser {
    * blog post content rich text editor.
    */
   async pasteContentInBlogPostContentRte(): Promise<void> {
-    // OverridePermissions is used to allow clipboard access.
+    // GrantPermissions is used to allow clipboard access.
     const context = this.page.context();
-    await context.overridePermissions('http://localhost:8181', [
-      'clipboard-read',
-      'clipboard-write',
-    ]);
+    await context.grantPermissions(
+      ['clipboard-read', 'clipboard-write'],
+      {origin: 'http://localhost:8181'}
+    );
     if (this.isViewportAtMobileWidth()) {
       await this.pasteTextTo(mobileBlogBodyInputWithText);
     } else {
@@ -339,7 +339,7 @@ export class BlogPostEditor extends BaseUser {
       const newError = new Error(
         `Failed to verify pasted content: ${error}`
       );
-      newError.stack = error.stack;
+      newError.stack = error instanceof Error ? error.stack : undefined;
       throw newError;
     }
   }
@@ -417,6 +417,7 @@ export class BlogPostEditor extends BaseUser {
       if (draftBlogPostTitle === checkDraftBlogPostTitle) {
         await this.clickOnElementWithSelector(
           '.e2e-test-blog-post-edit-box',
+          undefined,
           allDraftBlogPosts[i]
         );
         await this.expectElementToBeClickable(deleteBlogPostBtnSelector);
@@ -628,13 +629,10 @@ export class BlogPostEditor extends BaseUser {
             el,
             state,
           }: {
-            el: Element;
+            el: HTMLButtonElement | null;
             state: string;
           }) => {
-            return (
-              (el as HTMLElement).getAttribute('aria-pressed') ===
-              state
-            );
+            return el?.getAttribute('aria-pressed') === state;
           },
           {
             el: await tagElement.$('button'),
@@ -703,7 +701,7 @@ export class BlogPostEditor extends BaseUser {
     const editBlogBodyElement = await this.page.waitForSelector(
       editBlogBodySelector,
       {
-        visible: true,
+        state: 'visible',
       }
     );
     if (!editBlogBodyElement) {
@@ -714,7 +712,7 @@ export class BlogPostEditor extends BaseUser {
     // Click on the text area of the RTE editor (adapted from rteEditor.clickOnTextArea()).
     const textAreaElement = await this.page.waitForSelector(
       rteTextAreaSelector,
-      {visible: true}
+      {state: 'visible'}
     );
     if (!textAreaElement) {
       throw new Error('Text area element not found.');
@@ -736,7 +734,7 @@ export class BlogPostEditor extends BaseUser {
 
     const iframes = this.page.frames();
 
-    let iframe: typeof this.page | null = null;
+    let iframe: Frame | null = null;
     for (const frame of iframes) {
       if (frame.name().includes('cke')) {
         iframe = frame;
@@ -782,7 +780,7 @@ export class BlogPostEditor extends BaseUser {
     await formatOptionElement2.click();
 
     const iframes2 = this.page.frames();
-    let iframe2: typeof this.page | null = null;
+    let iframe2: Frame | null = null;
     for (const frame of iframes2) {
       if (frame.name().includes('cke')) {
         iframe2 = frame;
@@ -872,6 +870,7 @@ export class BlogPostEditor extends BaseUser {
       if (publishedBlogPostTitle === blogPostTitle) {
         await this.clickOnElementWithSelector(
           '.e2e-test-blog-post-edit-box',
+          undefined,
           allPublishedBlogPosts[i]
         );
         await this.expectElementToBeClickable(deleteBlogPostBtnSelector);
@@ -893,10 +892,9 @@ export class BlogPostEditor extends BaseUser {
   async expectUserUnableToPublishBlogPost(
     expectedWarningMessage: string
   ): Promise<void> {
-    const toastMessageBox = await this.page.$(toastMessage);
-    const toastMessageWarning = await this.page.evaluate(
-      (element: HTMLDivElement) => element.textContent,
-      toastMessageBox
+    const toastMessageWarning = await this.page.$eval(
+      toastMessage,
+      element => (element as HTMLElement).textContent
     );
     const isPublishButtonDisabled = await this.page.$eval(
       publishBlogPostButton,
